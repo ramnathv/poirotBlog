@@ -6,11 +6,11 @@ author:
   github: ramnathv
   firstname: Ramnath
   lastname: Vaidyanathan
-logo: /assets/img/poirot.jpg 
+logo: assets/img/poirot.jpg 
 social:
   github: ramnathv
   twitter: ramnath_vaidya
-url: http://ramnathv.github.com/poirotBlog/
+url: http://ramnath.github.com/poirotBlog/
 URL: http://github.com/ramnathv/poirot
 navigation: 
   - {item: Home, href: index.html}
