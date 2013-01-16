@@ -92,7 +92,7 @@ gg.opts.graph.height = 300;
   </div>
   <div class='span6'>
     <pre>&lt;script&gt;
-gg.data.fetch(&quot;/posts/data/tips.csv&quot;, function(data){
+gg.data.fetch(&quot;posts/data/tips.csv&quot;, function(data){
   gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'total_bill', 'y': 'tip'})
@@ -107,7 +107,7 @@ gg.data.fetch(&quot;/posts/data/tips.csv&quot;, function(data){
   </div>
 </div>
 <script>
-gg.data.fetch("/posts/data/tips.csv", function(data){
+gg.data.fetch("posts/data/tips.csv", function(data){
   gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'total_bill', 'y': 'tip'})
@@ -125,7 +125,7 @@ gg.data.fetch("/posts/data/tips.csv", function(data){
   </div>
   <div class='span6'>
     <pre>&lt;script&gt;
-gg.data.fetch('/posts/data/mtcars.csv', function(data){
+gg.data.fetch('posts/data/mtcars.csv', function(data){
   gg.graph(data)
   .layer(gg.layer.bar()
     .map({'x':'cyl', 'y':'count', 'color':'gear'}))
@@ -137,7 +137,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
   </div>
 </div>
 <script>
-gg.data.fetch('/posts/data/mtcars.csv', function(data){
+gg.data.fetch('posts/data/mtcars.csv', function(data){
   gg.graph(data)
   .layer(gg.layer.bar()
     .map({'x':'cyl', 'y':'count', 'color':'gear'}))
@@ -152,7 +152,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
   </div>
   <div class='span6'>
     <pre>&lt;script&gt;
-  gg.data.fetch(&quot;/posts/data/iris.csv&quot;, function(data) {
+  gg.data.fetch(&quot;posts/data/iris.csv&quot;, function(data) {
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x':'SepalLength', 'y':'PetalLength'})
@@ -165,7 +165,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
   </div>
 </div>
 <script>
-  gg.data.fetch("/posts/data/iris.csv", function(data) {
+  gg.data.fetch("posts/data/iris.csv", function(data) {
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x':'SepalLength', 'y':'PetalLength'})
@@ -181,7 +181,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
   </div>
   <div class='span6'>
     <pre>&lt;script&gt;
-  gg.data.fetch(&quot;/posts/data/iris.csv&quot;, function(data){
+  gg.data.fetch(&quot;posts/data/iris.csv&quot;, function(data){
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'SepalLength', 'y': 'PetalLength'}))
@@ -194,7 +194,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
   </div>
 </div>
 <script>
-  gg.data.fetch("/posts/data/iris.csv", function(data){
+  gg.data.fetch("posts/data/iris.csv", function(data){
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'SepalLength', 'y': 'PetalLength'}))

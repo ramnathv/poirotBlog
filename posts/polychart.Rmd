@@ -27,7 +27,7 @@ gg.opts.graph.height = 300;
 --- &poly chartid:chart1
 
 <script>
-gg.data.fetch("/posts/data/tips.csv", function(data){
+gg.data.fetch("posts/data/tips.csv", function(data){
   gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'total_bill', 'y': 'tip'})
@@ -42,7 +42,7 @@ gg.data.fetch("/posts/data/tips.csv", function(data){
 --- &poly chartid:chart2
 
 <script>
-gg.data.fetch('/posts/data/mtcars.csv', function(data){
+gg.data.fetch('posts/data/mtcars.csv', function(data){
   gg.graph(data)
   .layer(gg.layer.bar()
     .map({'x':'cyl', 'y':'count', 'color':'gear'}))
@@ -54,7 +54,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
 --- &poly chartid:chart3
 
 <script>
-  gg.data.fetch("/posts/data/iris.csv", function(data) {
+  gg.data.fetch("posts/data/iris.csv", function(data) {
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x':'SepalLength', 'y':'PetalLength'})
@@ -67,7 +67,7 @@ gg.data.fetch('/posts/data/mtcars.csv', function(data){
 --- &poly chartid:chart4
 
 <script>
-  gg.data.fetch("/posts/data/iris.csv", function(data){
+  gg.data.fetch("posts/data/iris.csv", function(data){
     gg.graph(data)
     .layer(gg.layer.point()
       .map({'x': 'SepalLength', 'y': 'PetalLength'}))
