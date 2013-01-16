@@ -10,7 +10,7 @@ logo: assets/img/poirot.jpg
 social:
   github: ramnathv
   twitter: ramnath_vaidya
-url: http://ramnath.github.com/poirotBlog/
+url: http://ramnathv.github.com/poirotBlog/
 URL: http://github.com/ramnathv/poirot
 navigation: 
   - {item: Home, href: index.html}
