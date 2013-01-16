@@ -1,0 +1,63 @@
+<!-- GeoMap generated in R 2.15.2 by googleVis 0.3.3 package -->
+<!-- Tue Jan 15 14:20:02 2013 -->
+
+
+<!-- jsHeader -->
+<script type="text/javascript" src="http://www.google.com/jsapi">
+</script>
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataGeoMapID4faf20c71fab ()
+{
+  var data = new google.visualization.DataTable();
+  var datajson =
+[
+ [
+ "ES",
+1 
+] 
+];
+data.addColumn('string','ISOCode');
+data.addColumn('number','TotalAmcCreated');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartGeoMapID4faf20c71fab() {
+  var data = gvisDataGeoMapID4faf20c71fab();
+  var options = {};
+options["dataMode"] = "regions";
+options["width"] = "700px";
+options["height"] = "400px";
+options["colors"] = [0xECE7F2, 0xA6BDDB, 0x2B8CBE];
+
+     var chart = new google.visualization.GeoMap(
+       document.getElementById('GeoMapID4faf20c71fab')
+     );
+     chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart 
+function displayChartGeoMapID4faf20c71fab()
+{
+  google.load("visualization", "1", { packages:["geomap"] }); 
+  google.setOnLoadCallback(drawChartGeoMapID4faf20c71fab);
+}
+ 
+// jsChart 
+displayChartGeoMapID4faf20c71fab()
+ 
+<!-- jsFooter -->  
+//-->
+</script>
+ 
+<!-- divChart -->
+  
+<div id="GeoMapID4faf20c71fab"
+  style="width: 700pxpx; height: 400pxpx;">
+</div>

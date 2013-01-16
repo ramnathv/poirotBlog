@@ -1,0 +1,263 @@
+<!-- GeoMap generated in R 2.15.2 by googleVis 0.3.3 package -->
+<!-- Tue Jan 15 14:20:02 2013 -->
+
+
+<!-- jsHeader -->
+<script type="text/javascript" src="http://www.google.com/jsapi">
+</script>
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataGeoMapID4faf70f0245c ()
+{
+  var data = new google.visualization.DataTable();
+  var datajson =
+[
+ [
+ "AL",
+1 
+],
+[
+ "AU",
+1 
+],
+[
+ "AT",
+1 
+],
+[
+ "BE",
+1 
+],
+[
+ "BO",
+1 
+],
+[
+ "BG",
+1 
+],
+[
+ "CN",
+4 
+],
+[
+ "CO",
+1 
+],
+[
+ "CI",
+1 
+],
+[
+ "HR",
+1 
+],
+[
+ "CZ",
+5 
+],
+[
+ "DK",
+1 
+],
+[
+ "EC",
+1 
+],
+[
+ "EE",
+1 
+],
+[
+ "FI",
+1 
+],
+[
+ "FR",
+1 
+],
+[
+ "DE",
+2 
+],
+[
+ "GH",
+1 
+],
+[
+ "GR",
+1 
+],
+[
+ "HU",
+1 
+],
+[
+ "ID",
+1 
+],
+[
+ "IE",
+1 
+],
+[
+ "JM",
+1 
+],
+[
+ "JP",
+5 
+],
+[
+ "KZ",
+5 
+],
+[
+ "KR",
+1 
+],
+[
+ "KG",
+2 
+],
+[
+ "LT",
+1 
+],
+[
+ "MK",
+1 
+],
+[
+ "MY",
+2 
+],
+[
+ "MX",
+3 
+],
+[
+ "MN",
+1 
+],
+[
+ "NI",
+1 
+],
+[
+ "NG",
+1 
+],
+[
+ "PH",
+2 
+],
+[
+ "RO",
+2 
+],
+[
+ "SN",
+1 
+],
+[
+ "SK",
+3 
+],
+[
+ "SI",
+1 
+],
+[
+ "ES",
+1 
+],
+[
+ "LK",
+1 
+],
+[
+ "SE",
+2 
+],
+[
+ "CH",
+1 
+],
+[
+ "TZ",
+1 
+],
+[
+ "TH",
+1 
+],
+[
+ "TR",
+1 
+],
+[
+ "UG",
+1 
+],
+[
+ "GB",
+2 
+],
+[
+ "US",
+4 
+],
+[
+ "UY",
+2 
+],
+[
+ "VN",
+1 
+] 
+];
+data.addColumn('string','ISOCode');
+data.addColumn('number','TotalAmcCreated');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartGeoMapID4faf70f0245c() {
+  var data = gvisDataGeoMapID4faf70f0245c();
+  var options = {};
+options["dataMode"] = "regions";
+options["width"] = "700px";
+options["height"] = "400px";
+options["colors"] = [0xECE7F2, 0xA6BDDB, 0x2B8CBE];
+
+     var chart = new google.visualization.GeoMap(
+       document.getElementById('GeoMapID4faf70f0245c')
+     );
+     chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart 
+function displayChartGeoMapID4faf70f0245c()
+{
+  google.load("visualization", "1", { packages:["geomap"] }); 
+  google.setOnLoadCallback(drawChartGeoMapID4faf70f0245c);
+}
+ 
+// jsChart 
+displayChartGeoMapID4faf70f0245c()
+ 
+<!-- jsFooter -->  
+//-->
+</script>
+ 
+<!-- divChart -->
+  
+<div id="GeoMapID4faf70f0245c"
+  style="width: 700pxpx; height: 400pxpx;">
+</div>

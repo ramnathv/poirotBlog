@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>d3.js + R with polycharts.js</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="" />
+  <meta name="author" content="ramnathv.gmail@gmail.com,ramnathv,Ramnath,Vaidyanathan">
+  <link rel="shortcut icon" href="../assets/img/poirot.jpg">
+  <link rel="alternate" type="application/rss+xml" href="">
+  <link href="../libraries/frameworks/purus/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/bootstrap-responsive.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/main.css" rel="stylesheet" />
+  <link href="../libraries/highlighters/prettify/css/twitter-bootstrap.css" rel="stylesheet">
+  <!-- IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,600,200,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <style>
+	  #sidebar .sidebar-nav .info h3 a:hover, a:hover { color: #01A9DB; }
+	  #sidebar .sidebar-nav #avatar img, #sidebar .sidebar-nav ul#links li.active a { border-color: #01A9DB; }
+	  #sidebar .sidebar-nav ul#links li a:hover { background: #01A9DB; }
+    p {text-align: justify;}
+  </style>
+  <link rel="stylesheet" href = "../assets/css/custom.css">
+<link rel="stylesheet" href = "../assets/css/ribbons.css">
+
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div id="sidebar" class="span2">
+			  <div class="sidebar-nav sidebar-nav-fixed">
+			    <a href="https://github.com/ramnathv/poirot">
+      <img style="position: absolute; top: 0; left: 100px; border: 0; height: 100px; z-index: 1;" 
+        alt="Fork me on GitHub" 
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" >
+    </a>
+	  <div class="info">
+				    <p id="avatar"><a href="#"><img alt="Title" src="../assets/img/poirot.jpg " /></a></p>
+				    <h3><a href="/">Poirot </a></h3>
+					  <p class="description">Blogging for Data Scientists</p>
+					</div>
+					<ul id="links">
+			        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+      
+        <li><a href="http://github.com/ramnathv" id="Github-link">Github</a></li>
+                
+        <li><a href="http://twitter.com/#!/ramnath_vaidya" id="Twitter-link">Twitter</a></li>
+      
+			    </ul>
+				</div>
+			</div>
+						<div id="content" class='span10'>
+				<div id="post-wrapper">
+          <ol id="posts">
+            <li class="post">
+              <h3>
+                <a href="#">d3.js + R with polycharts.js</a>
+              </h3>
+              <span>2012-12-14</span><br/>
+              <div class='lead'>
+<p><a href="http://polychartjs.com/">Polycharts</a> is a charting library that allows users to create elegant, interactive visualizations using <code>d3.js</code> and grammar of graphics.</p>
+
+</div>
+
+<script 
+  src="https://raw.github.com/Polychart/polychart.js/master/polychart.latest.min.js">
+</script>
+
+<style>
+.mycode pre {
+  font-size: 11px;
+  line-height: 16px;
+}
+</style>
+
+<script>
+gg.opts.graph.branding = false;
+gg.opts.graph.width = 400;
+gg.opts.graph.height = 300;
+</script>
+
+<div class='row-fluid mycode'>
+  <div class='span6'>
+    <div id='chart1'></div>
+  </div>
+  <div class='span6'>
+    <pre>&lt;script&gt;
+gg.data.fetch(&quot;/posts/data/tips.csv&quot;, function(data){
+  gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x': 'total_bill', 'y': 'tip'})
+      .map('color', 'day')
+      .opts({'opacity': 0.6, 'radius': 2}))
+    .opts('title', 'Tips Dataset')
+    .facet(gg.facet.wrap('sex').ncol(2))
+    .render(&quot;#chart1&quot;)
+  });
+&lt;/script&gt;
+</pre>
+  </div>
+</div>
+<script>
+gg.data.fetch("/posts/data/tips.csv", function(data){
+  gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x': 'total_bill', 'y': 'tip'})
+      .map('color', 'day')
+      .opts({'opacity': 0.6, 'radius': 2}))
+    .opts('title', 'Tips Dataset')
+    .facet(gg.facet.wrap('sex').ncol(2))
+    .render("#chart1")
+  });
+</script>
+
+<div class='row-fluid mycode'>
+  <div class='span6'>
+    <div id='chart2'></div>
+  </div>
+  <div class='span6'>
+    <pre>&lt;script&gt;
+gg.data.fetch('/posts/data/mtcars.csv', function(data){
+  gg.graph(data)
+  .layer(gg.layer.bar()
+    .map({'x':'cyl', 'y':'count', 'color':'gear'}))
+  .scale('x', gg.scale.discrete())
+  .render('#chart2');
+});
+&lt;/script&gt;
+</pre>
+  </div>
+</div>
+<script>
+gg.data.fetch('/posts/data/mtcars.csv', function(data){
+  gg.graph(data)
+  .layer(gg.layer.bar()
+    .map({'x':'cyl', 'y':'count', 'color':'gear'}))
+  .scale('x', gg.scale.discrete())
+  .render('#chart2');
+});
+</script>
+
+<div class='row-fluid mycode'>
+  <div class='span6'>
+    <div id='chart3'></div>
+  </div>
+  <div class='span6'>
+    <pre>&lt;script&gt;
+  gg.data.fetch(&quot;/posts/data/iris.csv&quot;, function(data) {
+    gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x':'SepalLength', 'y':'PetalLength'})
+      .map('color', 'Species'))
+    .opts('title', 'Iris: Scatter Plot')
+    .render(&quot;#chart3&quot;);
+  }); 
+&lt;/script&gt;
+</pre>
+  </div>
+</div>
+<script>
+  gg.data.fetch("/posts/data/iris.csv", function(data) {
+    gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x':'SepalLength', 'y':'PetalLength'})
+      .map('color', 'Species'))
+    .opts('title', 'Iris: Scatter Plot')
+    .render("#chart3");
+  }); 
+</script>
+
+<div class='row-fluid mycode'>
+  <div class='span6'>
+    <div id='chart4'></div>
+  </div>
+  <div class='span6'>
+    <pre>&lt;script&gt;
+  gg.data.fetch(&quot;/posts/data/iris.csv&quot;, function(data){
+    gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x': 'SepalLength', 'y': 'PetalLength'}))
+    .opts('title', 'Iris Flower Dataset')
+    .facet(gg.facet.wrap('Species').ncol(3))
+    .render(&quot;#chart4&quot;)
+  });
+&lt;/script&gt;
+</pre>
+  </div>
+</div>
+<script>
+  gg.data.fetch("/posts/data/iris.csv", function(data){
+    gg.graph(data)
+    .layer(gg.layer.point()
+      .map({'x': 'SepalLength', 'y': 'PetalLength'}))
+    .opts('title', 'Iris Flower Dataset')
+    .facet(gg.facet.wrap('Species').ncol(3))
+    .render("#chart4")
+  });
+</script>
+
+
+<pre><code class="r">dat = setNames(iris, nm = gsub(&quot;.&quot;, &quot;&quot;, names(iris), fixed = TRUE))
+write.csv(dat, file = &quot;data/iris.csv&quot;)
+dat2 = plyr::ddply(mtcars, .(cyl, gear), summarise, count = length(cyl))
+write.csv(dat2, file = &quot;data/mtcars.csv&quot;)
+</code></pre>
+
+<div class="alert">
+ <p> Due to same-origin-policy, reading external data will not work for static files. You will have to serve the blog using a local server. I recommend the rubygem `white_castle` which does not require any configuration.</p>
+</div>
+
+              <div id="disqus_thread"></div>
+            </li>
+          </ol>
+          <div class="pagination">
+            <ul>
+              <li><a href="/">&#171; Back Home</a></li>
+            </ul>
+          </div> 
+        </div>
+			</div>
+		</div>
+  </div>
+</body>
+  <script src='../libraries/frameworks/purus/js/bootstrap.min.js'></script>
+  <script>
+      var disqus_developer = 1;
+      var disqus_shortname = 'slidify'; 
+      // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); 
+          dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || 
+           document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="../libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='../libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --></html>

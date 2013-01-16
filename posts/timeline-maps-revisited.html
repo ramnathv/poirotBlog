@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TimeLine Maps Revisited</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="" />
+  <meta name="author" content="ramnathv.gmail@gmail.com,ramnathv,Ramnath,Vaidyanathan">
+  <link rel="shortcut icon" href="../assets/img/poirot.jpg">
+  <link rel="alternate" type="application/rss+xml" href="">
+  <link href="../libraries/frameworks/purus/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/bootstrap-responsive.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/main.css" rel="stylesheet" />
+  <link href="../libraries/highlighters/prettify/css/twitter-bootstrap.css" rel="stylesheet">
+  <!-- IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,600,200,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <style>
+	  #sidebar .sidebar-nav .info h3 a:hover, a:hover { color: #01A9DB; }
+	  #sidebar .sidebar-nav #avatar img, #sidebar .sidebar-nav ul#links li.active a { border-color: #01A9DB; }
+	  #sidebar .sidebar-nav ul#links li a:hover { background: #01A9DB; }
+    p {text-align: justify;}
+  </style>
+  <link rel="stylesheet" href = "../assets/css/custom.css">
+<link rel="stylesheet" href = "../assets/css/ribbons.css">
+
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div id="sidebar" class="span2">
+			  <div class="sidebar-nav sidebar-nav-fixed">
+			    <a href="https://github.com/ramnathv/poirot">
+      <img style="position: absolute; top: 0; left: 100px; border: 0; height: 100px; z-index: 1;" 
+        alt="Fork me on GitHub" 
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" >
+    </a>
+	  <div class="info">
+				    <p id="avatar"><a href="#"><img alt="Title" src="../assets/img/poirot.jpg " /></a></p>
+				    <h3><a href="/">Poirot </a></h3>
+					  <p class="description">Blogging for Data Scientists</p>
+					</div>
+					<ul id="links">
+			        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+      
+        <li><a href="http://github.com/ramnathv" id="Github-link">Github</a></li>
+                
+        <li><a href="http://twitter.com/#!/ramnath_vaidya" id="Twitter-link">Twitter</a></li>
+      
+			    </ul>
+				</div>
+			</div>
+						<div id="content" class='span10'>
+				<div id="post-wrapper">
+          <ol id="posts">
+            <li class="post">
+              <h3>
+                <a href="#">TimeLine Maps Revisited</a>
+              </h3>
+              <span>2012-12-12</span><br/>
+              
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+
+<h3>Introduction</h3>
+
+<p>Recently, Christopher Gandrud posted an excellent <a href="http://christophergandrud.github.com/amc-site/maps.html">blog article</a> on how to display timeline maps using <code>googleVis</code> and <code>Twitter Bootstrap</code>. This slide deck is inspired by the article. </p>
+
+<p>The main objective of this slide deck is to illustrate</p>
+
+<ul>
+<li>How to insert Timeline Maps directly in Slidify.</li>
+<li>How to use mustache templates to work with <code>bootstrap</code>.</li>
+</ul>
+
+
+<p><strong>Step 1. Load googleVis and Dataset</strong></p>
+
+<p>We will first load <code>googleVis</code> and an example dataset. This code is directly borrowed from <a href="https://github.com/christophergandrud/amcData/blob/master/SourceCode/Descriptive/AMCTotalMaps.R">Christopher Gandrud</a></p>
+
+<pre><code class="r">library(googleVis)
+
+# Load most recent data
+URL &lt;- &quot;https://raw.github.com/christophergandrud/amcData/master/MainData/amcCountryYear.csv&quot;
+Full &lt;- RCurl::getURL(URL)
+Full &lt;- read.csv(textConnection(Full))
+
+# Clean for mapping
+Full &lt;- plyr::rename(Full, c(NumAMCCountryNoNA = &quot;TotalAmcCreated&quot;))
+</code></pre>
+
+
+<p><strong>Step 2. Generate GeoMaps</strong></p>
+
+<pre><code class="r">MapAMC &lt;- function(y){
+  yearTemp &lt;- y  
+  TempMap &lt;-  gvisGeoMap(subset(Full, year == yearTemp &amp;
+    TotalAmcCreated != 0), 
+    locationvar = &quot;ISOCode&quot;, 
+    numvar = &quot;TotalAmcCreated&quot;,
+    options = list(
+      colors = &quot;[0xECE7F2, 0xA6BDDB, 0x2B8CBE]&quot;,
+      width = &quot;700px&quot;,
+      height = &quot;400px&quot;
+    ))
+  print(TempMap, file = paste(&quot;assets/fig/AMCMap&quot;, yearTemp, &quot;.html&quot;, sep = &quot;&quot;), 
+   tag = &quot;chart&quot;)
+}
+
+Years &lt;- c(1980, 2011)
+lapply(Years, MapAMC)
+</code></pre>
+
+
+<p><strong>Step 3. DRY Approach to Carousels</strong></p>
+
+<p>A clean, DRY and reusable approach to using <code>bootstrap</code> with markdown is to separate the markup and the content. One way to achieve this is to </p>
+
+<ol>
+<li>Use <strong>mustache</strong> templates to encapsulate the markup.</li>
+<li>Generate <strong>data</strong> to populate the template.</li>
+<li>Use <strong>whisker</strong> to render the view.</li>
+</ol>
+
+
+<p><strong>Step 3A. Create Layout</strong></p>
+
+<p>First, we create a <code>mustache</code> template to encapsulate the markup.</p>
+
+<pre><code>&lt;div id=&quot;&quot; class=&quot;carousel slide&quot;&gt;
+  &lt;!-- Carousel items --&gt;
+  &lt;div class=&quot;carousel-inner&quot;&gt;
+  &lt;/div&gt;
+  &lt;!-- Carousel nav --&gt;
+  &lt;a class=&quot;carousel-control left&quot; href=&quot;#&quot; data-slide=&quot;prev&quot;&gt;&amp;lsaquo;&lt;/a&gt;
+  &lt;a class=&quot;carousel-control right&quot; href=&quot;#&quot; data-slide=&quot;next&quot;&gt;&amp;rsaquo;&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+
+<p><strong>Step 3B. Generate Data</strong></p>
+
+<p>Second, we generate data to populate the template.</p>
+
+<pre><code class="r">carousel = list(
+  id    = &#39;geomaps&#39;,
+  items = slidify:::zip_vectors(
+    src     = sprintf(&#39;assets/fig/AMCMap%s.html&#39;, Years),
+    active  = c(&#39;active&#39;, rep(&quot;&quot;, length(Years) - 1)),
+    caption = Years
+  )
+)
+</code></pre>
+
+
+<p><strong>Step 3C. Render Carousel</strong></p>
+
+<p>Finally, we render the carousel using the <code>whisker</code> package.</p>
+
+<pre><code>&lt;div id=&quot;geomaps&quot; class=&quot;carousel slide&quot;&gt;
+  &lt;!-- Carousel items --&gt;
+  &lt;div class=&quot;carousel-inner&quot;&gt;
+    &lt;div class=&quot;item active&quot;&gt;
+       &lt;iframe src=&quot;assets/fig/AMCMap1980.html&quot; height = 400 width = 700&gt;&lt;/iframe&gt;
+       &lt;div class=&quot;carousel-caption&quot;&gt;
+         &lt;center&gt;&lt;h1 style=&quot;color:white&quot;&gt;1980&lt;h1&gt;&lt;/center&gt;
+       &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;item &quot;&gt;
+       &lt;iframe src=&quot;assets/fig/AMCMap2011.html&quot; height = 400 width = 700&gt;&lt;/iframe&gt;
+       &lt;div class=&quot;carousel-caption&quot;&gt;
+         &lt;center&gt;&lt;h1 style=&quot;color:white&quot;&gt;2011&lt;h1&gt;&lt;/center&gt;
+       &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Carousel nav --&gt;
+  &lt;a class=&quot;carousel-control left&quot; href=&quot;#geomaps&quot; data-slide=&quot;prev&quot;&gt;&amp;lsaquo;&lt;/a&gt;
+  &lt;a class=&quot;carousel-control right&quot; href=&quot;#geomaps&quot; data-slide=&quot;next&quot;&gt;&amp;rsaquo;&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+
+<p><strong>Display Carousel</strong></p>
+
+<div id="geomaps" class="carousel slide">
+  <!-- Carousel items -->
+  <div class="carousel-inner">
+    <div class="item active">
+       <iframe src="assets/fig/AMCMap1980.html" height = 400 width = 700></iframe>
+       <div class="carousel-caption">
+         <center><h1 style="color:white">1980<h1></center>
+       </div>
+    </div>
+    <div class="item ">
+       <iframe src="assets/fig/AMCMap2011.html" height = 400 width = 700></iframe>
+       <div class="carousel-caption">
+         <center><h1 style="color:white">2011<h1></center>
+       </div>
+    </div>
+  </div>
+  <!-- Carousel nav -->
+  <a class="carousel-control left" href="#geomaps" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#geomaps" data-slide="next">&rsaquo;</a>
+</div>
+
+
+<p><strong>Note</strong></p>
+
+<p>Slidify allows use of <code>bootstrap</code> directly by including it as a <code>widget</code> in the YAML front matter. The widgets themselves are loaded from <a href="http://github.com/ramnathv/slidifyLibraries">slidifyLibraries</a> which is a support package consisting of external libraries used by Slidify.</p>
+
+<p>Currently, the <code>boostrap</code> widget does not ship with custom layouts. But my plan is to add commonly used layouts so that users of Slidify can directly use it without having to do any more work. </p>
+
+<p>If you are familiar with <code>bootstrap</code> and <code>mustache</code>, you can contribute to this by forking <code>slidifyLibraries</code>, adding layouts to <code>libraries/widgets/bootstrap/layouts</code> and sending me a pull request.</p>
+
+              <div id="disqus_thread"></div>
+            </li>
+          </ol>
+          <div class="pagination">
+            <ul>
+              <li><a href="/">&#171; Back Home</a></li>
+            </ul>
+          </div> 
+        </div>
+			</div>
+		</div>
+  </div>
+</body>
+  <script src='../libraries/frameworks/purus/js/bootstrap.min.js'></script>
+  <script>
+      var disqus_developer = 1;
+      var disqus_shortname = 'slidify'; 
+      // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); 
+          dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || 
+           document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='../libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --></html>

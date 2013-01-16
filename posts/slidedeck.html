@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checking Slides within Blogify</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Checking Slides within Blogify">
+  <meta name="author" content="">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="../libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="../libraries/frameworks/io2012/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="../libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="../libraries/highlighters/highlight.js/css/solarized_light.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="../libraries/frameworks/io2012/js/slides" 
+    src="../libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+    <link rel="stylesheet" href = "../assets/css/custom.css">
+<link rel="stylesheet" href = "../assets/css/ribbons.css">
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+    <!-- END LOGO SLIDE -->
+    
+
+    <!-- TITLE SLIDE -->
+    <!-- Should I move this to a Local Layout File? -->
+    <slide class="title-slide segue nobackground">
+      <hgroup class="auto-fadein">
+        <h1>Checking Slides within Blogify</h1>
+        <h2></h2>
+        <p>Ramnath Vaidyanathan<br/>Assistant Professor, McGill</p>
+      </hgroup>
+      <a href="https://github.com/ramnathv/poirot/zipball/gh-pages" class="example">
+        Download
+      </a>
+      
+      <footer class = 'license'>
+        <a href='http://creativecommons.org/licenses/by-nc-sa/3.0/' 
+          style='text-decoration:none;'>
+        <img width = '80px' 
+          src = 'http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png'>
+        </a>
+      </footer>
+    </slide>
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    
+  </hgroup>
+  <article>
+    <p><link href="../libraries/widgets/nvd3/src/nv.d3.css" rel="stylesheet" type="text/css"></p>
+
+<script src="../libraries/widgets/nvd3/lib/d3.v2.js"></script>
+
+<script src="../libraries/widgets/nvd3/lib/fisheye.js"></script>
+
+<script src="../libraries/widgets/nvd3/nv.d3.js"></script>
+
+<h2>Slide 1</h2>
+
+<p>Some <strong>contents</strong></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Slide 2</h2>
+  </hgroup>
+  <article>
+    <ol class = "build">
+<li>Point 1</li>
+<li>Point 2</li>
+<li>Point 3</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+  <aside class="note">
+    <section>
+      <p>These are some notes.</p>
+
+    </section>
+  </aside>
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Scatterplot with d3.js</h2>
+  </hgroup>
+  <article>
+    <div id="chart2" style='width:900px; height:500px; margin:auto auto;'>
+  <svg></svg>
+</div>
+
+<script>
+d3.json("data/mtcars.json", function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.cyl })
+    .entries(data);
+  
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.wt })
+      .y(function(d){ return d.mpg })
+      .showDistX(true)
+      .showDistY(true)
+      .width(900)
+      .height(500)
+      
+    chart.xAxis
+      .showMaxMin(true)
+      .tickFormat(d3.format('.02f'));
+  
+    d3.select('#chart2 svg')
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+    
+    return chart;
+  });
+})
+</script>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Gun Ownership vs. Homicides</h2>
+  </hgroup>
+  <article>
+    <div id = 'chart3' style='margin: auto auto;'>
+ <svg></svg>
+</div>
+
+<script>
+d3.json("data/gundeaths.json", function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.continent })
+    .entries(data)
+  
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.Guns })
+      .y(function(d){ return d.Homicides })
+      .color(d3.scale.category10().range())
+      .showDistX(true)
+      .showDistY(true)
+      .showControls(true)
+      .width(900)
+      .height(500)
+      .tooltipContent(function(key, x, y, e){ 
+        return e.point.Country 
+      })
+      
+    chart.scatter
+      .forceY([-5])
+      
+
+    chart.xAxis
+      .axisLabel("Guns")
+      
+    chart.yAxis
+      .axisLabel("Deaths")
+      
+    d3.select("#chart3 svg")
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+      
+    return chart;
+  })
+})
+</script>
+
+  </article>
+  <!-- Presenter Notes -->
+  <aside class="note">
+    <section>
+      <pre><code>&lt;script&gt;
+d3.json(&quot;data/gundeaths.json&quot;, function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.continent })
+    .entries(data)
+
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.Guns })
+      .y(function(d){ return d.Homicides })
+      .color(d3.scale.category10().range())
+      .showDistX(true)
+      .showDistY(true)
+      .width(800)
+      .height(500)
+      .tooltipContent(function(key, x, y, e){ 
+        return e.point.Country 
+      })
+
+
+    chart.scatter
+      .forceY([-2, 54])
+
+    chart.xAxis
+      .axisLabel(&quot;Guns&quot;)
+
+    chart.yAxis
+      .axisLabel(&quot;Deaths&quot;)
+
+    d3.select(&quot;#chart3 svg&quot;)
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+
+    return chart;
+  })
+})
+&lt;/script&gt;
+</code></pre>
+
+    </section>
+  </aside>
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    
+  </hgroup>
+  <article>
+    <div id = 'chart4' style='margin: auto auto;'>
+ <svg></svg>
+</div>
+
+<script>
+d3.json('data/expenses.json, function(data){
+  var data2 = d3.nest()
+    .key(function(d))
+    
+  nv.addGraph(function(){
+   
+    var chart = nv.models.multiBarHorizontalChart
+  
+  
+  });
+
+
+});
+</script>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+
+    <slide class="backdrop"></slide>
+  </slides>
+
+  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+<!-- Grab CDN jQuery, fall back to local if offline -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="../libraries/widgets/quiz/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Load Javascripts for Widgets -->
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'slidify'; 
+    // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); 
+        dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || 
+         document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="../libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="../libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+</html>

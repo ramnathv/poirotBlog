@@ -1,0 +1,199 @@
+---
+title: Checking Slides within Blogify
+author: Ramnath Vaidyanathan
+job   : Assistant Professor, McGill 
+license: by-nc-sa
+date: 2012-12-15
+framework: io2012
+tags: [tag1, tag2]
+highlighter: highlight.js
+hitheme: solarized_light
+---
+
+<link href="{{page.url.widgets}}/nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+<script src="{{page.url.widgets}}/nvd3/lib/d3.v2.js"></script>
+<script src="{{page.url.widgets}}/nvd3/lib/fisheye.js"></script>
+<script src="{{page.url.widgets}}/nvd3/nv.d3.js"></script>
+
+## Slide 1
+
+Some **contents**
+
+---
+
+## Slide 2
+
+> 1. Point 1
+> 2. Point 2
+> 3. Point 3
+
+*** =pnotes
+
+These are some notes.
+
+---
+
+## Scatterplot with d3.js
+
+<div id="chart2" style='width:900px; height:500px; margin:auto auto;'>
+  <svg></svg>
+</div>
+
+<script>
+d3.json("data/mtcars.json", function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.cyl })
+    .entries(data);
+  
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.wt })
+      .y(function(d){ return d.mpg })
+      .showDistX(true)
+      .showDistY(true)
+      .width(900)
+      .height(500)
+      
+    chart.xAxis
+      .showMaxMin(true)
+      .tickFormat(d3.format('.02f'));
+  
+    d3.select('#chart2 svg')
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+    
+    return chart;
+  });
+})
+</script>
+
+---
+
+## Gun Ownership vs. Homicides
+
+```{r echo = F, eval = F}
+df2json <- function(df){
+  y = do.call(slidify:::zip_vectors, as.list(df))
+  rjson::toJSON(y)
+}
+require(countrycode)
+guns = read.delim('http://mark.reid.name/files/code/guns/data/guns.csv')
+deaths = read.delim('http://mark.reid.name/files/code/guns/data/deaths.csv')
+dat = merge(guns, deaths)
+dat = transform(dat, 
+  continent = countrycode(Country, 'country.name', 'continent'))
+cat(df2json(dat), file = 'data/gundeaths.json')
+```
+
+<div id = 'chart3' style='margin: auto auto;'>
+ <svg></svg>
+</div>
+
+<script>
+d3.json("data/gundeaths.json", function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.continent })
+    .entries(data)
+  
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.Guns })
+      .y(function(d){ return d.Homicides })
+      .color(d3.scale.category10().range())
+      .showDistX(true)
+      .showDistY(true)
+      .showControls(true)
+      .width(900)
+      .height(500)
+      .tooltipContent(function(key, x, y, e){ 
+        return e.point.Country 
+      })
+      
+    chart.scatter
+      .forceY([-5])
+      
+
+    chart.xAxis
+      .axisLabel("Guns")
+      
+    chart.yAxis
+      .axisLabel("Deaths")
+      
+    d3.select("#chart3 svg")
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+      
+    return chart;
+  })
+})
+</script>
+
+*** =pnotes
+
+```
+<script>
+d3.json("data/gundeaths.json", function(data){
+  var data2 = d3.nest()
+    .key(function(d){ return d.continent })
+    .entries(data)
+  
+  nv.addGraph(function(){
+    var chart = nv.models.scatterChart()
+      .x(function(d){ return d.Guns })
+      .y(function(d){ return d.Homicides })
+      .color(d3.scale.category10().range())
+      .showDistX(true)
+      .showDistY(true)
+      .width(800)
+      .height(500)
+      .tooltipContent(function(key, x, y, e){ 
+        return e.point.Country 
+      })
+      
+    
+    chart.scatter
+      .forceY([-2, 54])
+
+    chart.xAxis
+      .axisLabel("Guns")
+      
+    chart.yAxis
+      .axisLabel("Deaths")
+      
+    d3.select("#chart3 svg")
+      .datum(data2)
+      .transition().duration(500)
+      .call(chart)
+      
+    return chart;
+  })
+})
+</script>
+```
+
+---
+
+<div id = 'chart4' style='margin: auto auto;'>
+ <svg></svg>
+</div>
+
+<script>
+d3.json('data/expenses.json, function(data){
+  var data2 = d3.nest()
+    .key(function(d))
+    
+  nv.addGraph(function(){
+   
+    var chart = nv.models.multiBarHorizontalChart
+  
+  
+  });
+
+
+});
+</script>
+
+
+

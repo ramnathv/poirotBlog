@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Visualizing Growth of a Retail Chain</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="" />
+  <meta name="author" content="ramnathv.gmail@gmail.com,ramnathv,Ramnath,Vaidyanathan">
+  <link rel="shortcut icon" href="../assets/img/poirot.jpg">
+  <link rel="alternate" type="application/rss+xml" href="">
+  <link href="../libraries/frameworks/purus/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/bootstrap-responsive.min.css" rel="stylesheet" />
+  <link href="../libraries/frameworks/purus/css/main.css" rel="stylesheet" />
+  <link href="../libraries/highlighters/prettify/css/twitter-bootstrap.css" rel="stylesheet">
+  <!-- IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,600,200,800' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <style>
+	  #sidebar .sidebar-nav .info h3 a:hover, a:hover { color: #01A9DB; }
+	  #sidebar .sidebar-nav #avatar img, #sidebar .sidebar-nav ul#links li.active a { border-color: #01A9DB; }
+	  #sidebar .sidebar-nav ul#links li a:hover { background: #01A9DB; }
+    p {text-align: justify;}
+  </style>
+  <link rel="stylesheet" href = "../assets/css/custom.css">
+<link rel="stylesheet" href = "../assets/css/ribbons.css">
+
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div id="sidebar" class="span2">
+			  <div class="sidebar-nav sidebar-nav-fixed">
+			    <a href="https://github.com/ramnathv/poirot">
+      <img style="position: absolute; top: 0; left: 100px; border: 0; height: 100px; z-index: 1;" 
+        alt="Fork me on GitHub" 
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" >
+    </a>
+	  <div class="info">
+				    <p id="avatar"><a href="#"><img alt="Title" src="../assets/img/poirot.jpg " /></a></p>
+				    <h3><a href="/">Poirot </a></h3>
+					  <p class="description">Blogging for Data Scientists</p>
+					</div>
+					<ul id="links">
+			        <li><a href="/index.html">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+      
+        <li><a href="http://github.com/ramnathv" id="Github-link">Github</a></li>
+                
+        <li><a href="http://twitter.com/#!/ramnath_vaidya" id="Twitter-link">Twitter</a></li>
+      
+			    </ul>
+				</div>
+			</div>
+						<div id="content" class='span10'>
+				<div id="post-wrapper">
+          <ol id="posts">
+            <li class="post">
+              <h3>
+                <a href="#">Visualizing Growth of a Retail Chain</a>
+              </h3>
+              <span>2012-12-12</span><br/>
+              
+<style>
+p {
+  text-align: justify;
+}
+</style>
+
+<p>I am a regular reader of the <a href="http://www.flowingdata.com">FlowingData</a> blog by Nathan Yau. It is an excellent reference for anyone interested in statistical visualization of data. One of his posts that caught my attention was a visualization of the growth of Walmart in the US. Given my research interests in retail, it was a fascinating insight into their growth strategy. So, I set out to recreate this visualization in R and was amazed at what one could achieve with less than 100 lines of R code. This blog post is a tutorial that describes how to create such a visualization of spatial growth.</p>
+
+<h4>Step 0. Download R</h4>
+
+<p>We will be using the statistical environment R for creating this visualization. R is open source, simple to use and works across multiple platforms. So go ahead and download R!</p>
+
+<h4>Step 1. Load libraries</h4>
+
+<p>One of the key strengths of R is the availability of several user-written packages that simplify the coding process. It is easy to install any R package by just typing install.packages(&#39;package.name&#39;) on the R console. For this visualization, we will be using the zipcode package to get long/lat for each location, lubridate to work with dates, ggplot2/maps to create the plots and animation to create an animated plot. In addition, we also source a couple of custom ggplot themes for the maps.</p>
+
+<pre><code class="r">library(zipcode)
+library(ggplot2)
+library(scales)
+library(lubridate)
+library(maps)
+library(animation)
+library(ggthemes)
+library(plyr)
+knitr::opts_chunk$set(tidy = FALSE)
+</code></pre>
+
+<h4>Step 2. Load data</h4>
+
+<p>We use the same <a href="http://www.econ.umn.edu/%7Eholmes/data/WalMart/index.html">data</a> source on Walmart store openings as used by Nathan Yau of the FlowingData blog. This data was originally collected by Prof. Thomas Holmes, and you can find the documentation for this data-set on his webpage. We convert opening dates to the correct format and also add a variable indicating the year of opening.</p>
+
+<pre><code class="r">walmart = read.csv(&quot;http://goo.gl/4EWpS&quot;, stringsAsFactors = F);
+walmart$OPENDATE = as.Date(walmart$OPENDATE,  &quot;%m/%d/%Y&quot;);
+walmart$openyear = year(walmart$OPENDATE);
+</code></pre>
+
+<h4>Step 3. Merge with zipcodes</h4>
+
+<p>We merge our store openings data with zipcode data to get long/lat information for every location. We sort the merged data by opening date and add an id variable to represent the sequence of store openings.</p>
+
+<pre><code class="r">data(zipcode)
+walmart      = rename(walmart, replace = c(&quot;ZIPCODE&quot; = &quot;zip&quot;))
+walmart      = merge(walmart, zipcode)
+walmart      = plyr::arrange(walmart, OPENDATE)
+walmart$id = as.numeric(rownames(walmart))
+</code></pre>
+
+<h4>Step 4. Construct map</h4>
+
+<p>We use the map_data function in ggplot2 to extract the US map with state boundaries. We construct a data frame with state centers and abbreviated state names to be used to annotate the map. We remove Alaska and Hawaii in order to maximize the visibility of plot details.</p>
+
+<pre><code class="r">usmap     = map_data(&quot;state&quot;); 
+state.info = data.frame(state.center, state.abb);
+state.info = subset(state.info, !state.abb %in% c(&quot;AK&quot;, &quot;HI&quot;));
+</code></pre>
+
+<h4>Step 5. Plot store openings</h4>
+
+<p>The next step is to create a function that plots a given number of stores on the US map. This is the basic function that we would be using while creating our animations. We use ggplot2 to create the plot by adding a layer of yellow points denoting stores on a US map with state boundaries. We also use a bigger red point to represent the most recent store opening for that subset.</p>
+
+<pre><code class="r">plotStore &lt;- function(.id){
+  df = subset(walmart, id &lt;= .id);
+  yr = year(df$OPENDATE[.id])
+  p1 = ggplot(df, aes(x = longitude, y = latitude)) +
+    geom_polygon(data = usmap, aes(x = long, y = lat, group = group), 
+      fill = &#39;gray10&#39;, colour = &#39;gray40&#39;, linetype = 2) +
+    geom_text(data = state.info, aes(x = x, y = y, label = state.abb), 
+      colour = &#39;white&#39;) +
+    geom_point(colour = &#39;yellow&#39;, size = 1) + 
+    geom_point(subset = .(id == .id), colour = alpha(&#39;red&#39;, 0.7),
+      size = 9)+
+    annotate(&#39;text&#39;, x = -70, y = 31, label = &#39;YEAR&#39;) + 
+    annotate(&#39;text&#39;, x = -70, y = 29, label =  yr, colour = &#39;red&#39;) +
+    annotate(&#39;text&#39;, x = -70, y = 27, label = &#39;STORES&#39;) +
+    annotate(&#39;text&#39;, x = -70, y = 25, label =  .id, colour = &#39;blue&#39;) +
+    theme_tufte(ticks = FALSE) +
+    labs(title = &#39;GROWTH OF WALMART, 1962 TO 2010&#39;, x = &quot;&quot;, y = &quot;&quot;) +
+    theme(
+      plot.title = element_text(colour = &#39;blue&#39;, face = &#39;bold&#39;, size = 20),
+      axis.text = element_blank()
+    ) +
+    coord_map(project=&quot;albers&quot;, lat0=37.5, lat1=29.5)      
+}
+</code></pre>
+
+<h4>Step 6. Plot number of store openings</h4>
+
+<p>We now create a function to plot the number of stores opened by date. We show the trend in number of stores opened using a blue line and a red point at the end.</p>
+
+<pre><code class="r">plotNumStores &lt;- function(.id){
+
+  df = subset(walmart, id &lt;= .id)
+  p0 = ggplot(walmart, aes(x = OPENDATE, y = id)) +
+    geom_point(colour = &#39;white&#39;) +
+    geom_line(subset = .(id &lt;= .id), colour = &#39;blue&#39;) +
+    geom_point(subset = .(id == .id), colour = alpha(&#39;red&#39;, 0.7), 
+      size = 2) +
+    scale_y_continuous(breaks = c(1000, 2000, 3000)) +
+    xlab(NULL) + ylab(NULL) +
+    theme_tufte(ticks = FALSE)
+}
+</code></pre>
+
+<h4>Step 7. Combine plots</h4>
+
+<p>The next step is to create a function that combines the two plots in Step 5 and Step 6. To do this, we use a trick illustrated in the learnr blog of creating a viewport and using it to display one of the plots as an inset.</p>
+
+<pre><code class="r"># create a viewport on the bottom left corner
+vp = grid::viewport(width = 0.4, 
+  height = 0.3, x = 0,
+  y      = grid::unit(0.7, &#39;lines&#39;),   
+  just   = c(&#39;left&#39;,&#39;bottom&#39;)
+);
+
+# combine both plots into a single plot
+animateStores &lt;- function(.id){
+  print(plotStore(.id));
+  print(plotNumStores(.id), vp = vp);
+}
+animateStores(10)
+</code></pre>
+
+<pre><code>## Error: object &#39;walmart&#39; not found
+</code></pre>
+
+<h4>Step 8. Create animation</h4>
+
+<p>We are almost done. The final step is to create the animation using the animation package. We just need to throw the animateStore function created in Step 7 into a loop, and the animation package takes care of the rest! As the process of generating a gif file is very time consuming, I have only shown the output for 100 store openings in this post.</p>
+
+<pre><code class="r">for (i in 1:10) {
+  animateStores(i)
+}
+</code></pre>
+
+<pre><code>## Error: object &#39;walmart&#39; not found
+</code></pre>
+
+<p>Although, the final output is not as impressive as the visualization on FlowingData, it is not bad considering that it took less than two hours of time and 100 lines of R code. Note that it is easy to customize this code and create such a visualization for any dataset with store opening dates and zip-codes!</p>
+
+              <div id="disqus_thread"></div>
+            </li>
+          </ol>
+          <div class="pagination">
+            <ul>
+              <li><a href="/">&#171; Back Home</a></li>
+            </ul>
+          </div> 
+        </div>
+			</div>
+		</div>
+  </div>
+</body>
+  <script src='../libraries/frameworks/purus/js/bootstrap.min.js'></script>
+  <script>
+      var disqus_developer = 1;
+      var disqus_shortname = 'slidify'; 
+      // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); 
+          dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || 
+           document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="../libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='../libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --></html>
