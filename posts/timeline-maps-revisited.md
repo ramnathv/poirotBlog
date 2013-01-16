@@ -34,7 +34,7 @@ URL <- "https://raw.github.com/christophergandrud/amcData/master/MainData/amcCou
 Full <- RCurl::getURL(URL)
 Full <- read.csv(textConnection(Full))
 
-# Clean for mapping
+# Clean for mapping 
 Full <- plyr::rename(Full, c(NumAMCCountryNoNA = "TotalAmcCreated"))
 ```
 

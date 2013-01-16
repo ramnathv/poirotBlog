@@ -206,9 +206,9 @@ gg.data.fetch('data/mtcars.csv', function(data){
 
 
 <pre><code class="r">dat = setNames(iris, nm = gsub(&quot;.&quot;, &quot;&quot;, names(iris), fixed = TRUE))
-write.csv(dat, file = &quot;data/iris.csv&quot;)
+write.csv(dat, file = &#39;data/iris.csv&#39;)
 dat2 = plyr::ddply(mtcars, .(cyl, gear), summarise, count = length(cyl))
-write.csv(dat2, file = &quot;data/mtcars.csv&quot;)
+write.csv(dat2, file = &#39;data/mtcars.csv&#39;)
 </code></pre>
 
 <div class="alert">

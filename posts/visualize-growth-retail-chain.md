@@ -22,14 +22,14 @@ One of the key strengths of R is the availability of several user-written packag
 
 
 ```r
-library(zipcode)
-library(ggplot2)
-library(scales)
-library(lubridate)
-library(maps)
-library(animation)
-library(ggthemes)
-library(plyr)
+library(zipcode); 
+library(ggplot2); 
+library(scales);
+library(lubridate); 
+library(maps);
+library(animation);
+library(ggthemes);
+library(plyr);
 knitr::opts_chunk$set(tidy = FALSE)
 ```
 
@@ -147,9 +147,7 @@ animateStores <- function(.id){
 animateStores(10)
 ```
 
-```
-## Error: object 'walmart' not found
-```
+![plot of chunk unnamed-chunk-7](assets/fig/unnamed-chunk-7.png) 
 
 
 #### Step 8. Create animation
@@ -163,9 +161,7 @@ for (i in 1:10) {
 }
 ```
 
-```
-## Error: object 'walmart' not found
-```
+<video   controls="controls" loop="loop"><source src="assets/fig/walmart.mp4" type="video/mp4" />video of chunk walmart</video>
 
 
 Although, the final output is not as impressive as the visualization on FlowingData, it is not bad considering that it took less than two hours of time and 100 lines of R code. Note that it is easy to customize this code and create such a visualization for any dataset with store opening dates and zip-codes!

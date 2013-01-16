@@ -11,6 +11,7 @@ social:
   github: ramnathv
   twitter: ramnath_vaidya
 url: http://ramnathv.github.com/poirotBlog/
+# url: /
 URL: http://github.com/ramnathv/poirot
 navigation: 
   - {item: Home, href: index.html}

@@ -81,14 +81,14 @@ p {
 
 <p>One of the key strengths of R is the availability of several user-written packages that simplify the coding process. It is easy to install any R package by just typing install.packages(&#39;package.name&#39;) on the R console. For this visualization, we will be using the zipcode package to get long/lat for each location, lubridate to work with dates, ggplot2/maps to create the plots and animation to create an animated plot. In addition, we also source a couple of custom ggplot themes for the maps.</p>
 
-<pre><code class="r">library(zipcode)
-library(ggplot2)
-library(scales)
-library(lubridate)
-library(maps)
-library(animation)
-library(ggthemes)
-library(plyr)
+<pre><code class="r">library(zipcode); 
+library(ggplot2); 
+library(scales);
+library(lubridate); 
+library(maps);
+library(animation);
+library(ggthemes);
+library(plyr);
 knitr::opts_chunk$set(tidy = FALSE)
 </code></pre>
 
@@ -187,8 +187,7 @@ animateStores &lt;- function(.id){
 animateStores(10)
 </code></pre>
 
-<pre><code>## Error: object &#39;walmart&#39; not found
-</code></pre>
+<p><img src="assets/fig/unnamed-chunk-7.png" alt="plot of chunk unnamed-chunk-7"> </p>
 
 <h4>Step 8. Create animation</h4>
 
@@ -199,8 +198,7 @@ animateStores(10)
 }
 </code></pre>
 
-<pre><code>## Error: object &#39;walmart&#39; not found
-</code></pre>
+<p><video   controls="controls" loop="loop"><source src="assets/fig/walmart.mp4" type="video/mp4" />video of chunk walmart</video></p>
 
 <p>Although, the final output is not as impressive as the visualization on FlowingData, it is not bad considering that it took less than two hours of time and 100 lines of R code. Note that it is easy to customize this code and create such a visualization for any dataset with store opening dates and zip-codes!</p>
 

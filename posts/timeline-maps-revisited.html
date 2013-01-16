@@ -90,7 +90,7 @@ URL &lt;- &quot;https://raw.github.com/christophergandrud/amcData/master/MainDat
 Full &lt;- RCurl::getURL(URL)
 Full &lt;- read.csv(textConnection(Full))
 
-# Clean for mapping
+# Clean for mapping 
 Full &lt;- plyr::rename(Full, c(NumAMCCountryNoNA = &quot;TotalAmcCreated&quot;))
 </code></pre>
 
