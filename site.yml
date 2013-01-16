@@ -6,7 +6,7 @@ author:
   github: ramnathv
   firstname: Ramnath
   lastname: Vaidyanathan
-logo: assets/img/poirot.jpg 
+logo: /assets/img/poirot.jpg 
 social:
   github: ramnathv
   twitter: ramnath_vaidya
